@@ -3,4 +3,5 @@ patches/
 node_modules/
 tools/collect-map.json
 tools/reclass-plan*.json
+tools/bili-folders.json
 *.tmp
