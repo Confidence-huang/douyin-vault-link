@@ -1,0 +1,9 @@
+{
+  "id": "douyin-vault-link",
+  "name": "抖音 × 笔记库桥接",
+  "version": "1.3.3",
+  "minAppVersion": "1.9.0",
+  "description": "D:\\NOTE Learning Vault 专属：统一入口调用抖音同步、单链接归档、深度归档（引擎=bilibili-video-learning 技能，本地 GPU 转写+逐帧对照）、晋升为 04-来源 并挂主题地图",
+  "author": "A-Zhou / ZCode",
+  "isDesktopOnly": true
+}

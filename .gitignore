@@ -1,0 +1,6 @@
+patches/
+*.bak*
+node_modules/
+tools/collect-map.json
+tools/reclass-plan*.json
+*.tmp
