@@ -8,3 +8,5 @@ tools/bili-folders.json
 douyin-bridge.js
 bridge-common.js
 docs/patches/*.orig
+__pycache__/
+*.pyc
