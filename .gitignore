@@ -5,3 +5,6 @@ tools/collect-map.json
 tools/reclass-plan*.json
 tools/bili-folders.json
 *.tmp
+douyin-bridge.js
+bridge-common.js
+docs/patches/*.orig

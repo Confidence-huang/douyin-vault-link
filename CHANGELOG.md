@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.0 - 2026-09-14
+
+- **吸收 douyin-sync 同步引擎**：原生实现收藏夹同步循环（collects/list + collects/video/list 按夹枚举，listcollection 扁平回退），翻页限速与「连续已同步提前停止」阈值与原引擎逐字对齐。
+- **移除云端依赖**：删除四种云端 ASR 路径与云端 AI 分类/视觉；AI 分类（qwen2.5:3b）与图文 OCR（qwen2.5vl:3b）全部走本机 Ollama。
+- **移除 douyin-sync 依赖**：设置改读本插件 data.json；首次启动从 douyin-sync data.json 一次性迁移 cookie/桥接配置/分类列表与 1470 条同步状态（processed 映射），此后独立运行。
+- 桥接脚本（douyin-bridge.js + bridge-common.js）随插件分发，自动拉起不再依赖 douyin-sync 目录。
+- 收藏同步产出笔记 schema 与 douyin-sync 兼容（folder/category/douyin_id…），并新增 vault_status/promoted_to 契约字段；同步完成后自动生成 4 个 Bases 画廊（已存在则跳过）。
+- 同步命令更名为「同步抖音收藏（本地桥接）」；新增自动同步间隔设置（0=手动）。
+
 ## 1.3.3 - 2026-09-13
 
 - 新增「同步后自动深度归档新增」开关（默认关）：同步/粘贴归档产生的新视频笔记自动跑深度归档引擎。
