@@ -677,7 +677,7 @@ class DouyinVaultLinkPlugin extends Plugin {
         if (await this.processItem(item, folderName, stats, notice)) created++;
         await sleep(300);
       }
-      if (consecutive >= (Number(this.settings.scanStopAfterProcessed) || 100) || !res.hasMore || res.items.length === 0) break;
+      if (consecutive >= this.stopThreshold() || !res.hasMore || res.items.length === 0) break;
       cursor = res.cursor ?? cursor + 20;
       await sleep(600);
     }
@@ -699,7 +699,7 @@ class DouyinVaultLinkPlugin extends Plugin {
         if (await this.processItem(item, "未分类", stats, notice)) created++;
         await sleep(300);
       }
-      if (consecutive >= (Number(this.settings.scanStopAfterProcessed) || 100) || !res.hasMore || res.items.length === 0) break;
+      if (consecutive >= this.stopThreshold() || !res.hasMore || res.items.length === 0) break;
       cursor = res.cursor ?? cursor + 20;
       await sleep(600);
     }
@@ -749,6 +749,13 @@ class DouyinVaultLinkPlugin extends Plugin {
       stats.errors.push(`[${item.id}] ${String(e?.message ?? e).slice(0, 100)}`);
       return false;
     }
+  }
+
+  /* 提前停止阈值：0 = 不提前停止 */
+  stopThreshold() {
+    const n = Number(this.settings.scanStopAfterProcessed);
+    if (!Number.isFinite(n)) return 100;
+    return n > 0 ? n : Infinity;
   }
 
   /* 收藏同步的笔记路径：rootFolder/收藏/<夹名>/日期 标题 [id].md（与 douyin-sync vt 同构） */
