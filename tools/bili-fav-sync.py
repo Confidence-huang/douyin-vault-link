@@ -29,6 +29,20 @@ BRIDGELESS_HEADERS = {
 }
 
 
+BILI_BRIDGE = os.environ.get("BILI_VIDEO_BRIDGE") or "http://127.0.0.1:8766"
+
+
+def bridge_get_json(url: str):
+    """活会话路线：桥接页面内 fetch（Cookie 自动携带与续期）。"""
+    req = urllib.request.Request(BILI_BRIDGE.rstrip("/") + "/req",
+                                 data=json.dumps({"url": url, "method": "GET"}).encode("utf-8"),
+                                 headers={"Content-Type": "application/json"}, method="POST")
+    out = json.loads(urllib.request.urlopen(req, timeout=30).read().decode())
+    if out.get("status") != 200:
+        raise RuntimeError(f"bridge upstream {out.get('status')}")
+    return json.loads(out.get("text") or "{}")
+
+
 def get_json(url: str):
     import time as _t
     cookie = ""
@@ -38,6 +52,10 @@ def get_json(url: str):
     headers = dict(BRIDGELESS_HEADERS)
     if cookie:
         headers["Cookie"] = cookie
+    try:
+        return bridge_get_json(url)  # 首选活会话桥接
+    except Exception as e:
+        print(f"    [bridge] 桥接失败回落静态 Cookie：{str(e)[:60]}", flush=True)
     last = None
     for attempt in range(5):  # 412/超时 → 30s 起步指数退避，B站风控冷却
         try:
