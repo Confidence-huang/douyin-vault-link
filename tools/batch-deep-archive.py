@@ -10,6 +10,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -23,6 +24,7 @@ ENGINE_SCRIPT = os.environ.get("BVL_ENGINE_SCRIPT") or os.path.expanduser(
 BRIDGE = os.environ.get("DOUYIN_VIDEO_BRIDGE") or "http://127.0.0.1:8765"
 VISION_URL = os.environ.get("DOUYIN_VIDEO_VISION_URL") or "http://127.0.0.1:11434/v1"
 VISION_MODEL = "qwen2.5vl:3b"
+WORK_ROOT = Path(os.environ.get("DOUYIN_VIDEO_WORKDIR") or r"D:\DouyinMediaWork")  # 缓存放 D 盘，保护系统盘
 
 
 def frontmatter(text: str) -> dict:
@@ -77,8 +79,9 @@ def main() -> int:
                 [sys.executable, ENGINE_SCRIPT, "--id", str(fm["douyin_id"]), "--note", str(p),
                  "--vault", str(vault), "--bridge", BRIDGE, "--ffmpeg", "ffmpeg",
                  "--max-frames", "24", "--model", args.model,
+                 "--workdir", str(WORK_ROOT),
                  "--vision", "--vision-url", VISION_URL, "--vision-model", VISION_MODEL],
-                capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=1800)
+                capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=3600)  # 长视频（>30min）下载+转写需要更久
             if proc.returncode != 0:
                 raise RuntimeError(proc.stderr.strip().split("\n")[-1][:160])
             out = {}
@@ -87,6 +90,7 @@ def main() -> int:
             except Exception:
                 pass
             ok += 1
+            shutil.rmtree(WORK_ROOT / str(fm["douyin_id"]), ignore_errors=True)  # 成功即清视频缓存
             print(f"[{i}/{len(todo)}] OK {out.get('frames', '?')}帧/{out.get('segments', '?')}句 "
                   f"{time.time() - t0:.0f}s", flush=True)
         except Exception as e:
