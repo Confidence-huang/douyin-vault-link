@@ -3,7 +3,7 @@
   "name": "抖音 × 笔记库桥接",
   "version": "2.0.0",
   "minAppVersion": "1.9.0",
-  "description": "D:\NOTE Learning Vault 专属：原生收藏夹同步（本地桥接）+ 本地 AI 分类/图注（Ollama）+ 单链接归档 + 深度归档（引擎=bilibili-video-learning 技能，本地 GPU 转写+逐帧对照）+ 晋升为 04-来源 并挂主题地图 + Bases 画廊",
+  "description": "D:\\NOTE Learning Vault 专属：原生收藏夹同步（本地桥接）+ 本地 AI 分类/图注（Ollama）+ 单链接归档 + 深度归档（引擎=bilibili-video-learning 技能，本地 GPU 转写+逐帧对照）+ 晋升为 04-来源 并挂主题地图 + Bases 画廊",
   "author": "A-Zhou / ZCode",
   "isDesktopOnly": true
 }
